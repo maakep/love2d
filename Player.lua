@@ -1,3 +1,5 @@
+local C = require "CollisionCheck"
+
 local P = {}
 
 local x
@@ -7,36 +9,64 @@ local bool = false
 
 
 
-player = {}
+player 		=	{ radius = 20 }
+
+projectiles	=	{}
+bulletSpeed = 250
+
 
 function P.init()
-	x = 1800
-	y = 300
+	player.x = 1800
+	player.y = 300
 
-	player.body = love.physics.newBody(world, x, y, "dynamic")
+	player.body = love.physics.newBody(world, player.x, player.y, "dynamic")
 	player.shape = love.physics.newCircleShape(20)
 	player.fixture = love.physics.newFixture(player.body, player.shape, 1)
 end
 
 function P.drawPlayer()
 	love.graphics.circle("fill", player.body:getX(), player.body:getY(), player.shape:getRadius())
+
+	for i, v in ipairs(projectiles) do
+		love.graphics.circle("fill", v.x, v.y, 3)
+	end
 end
 
 function P.update(dt)
 	if love.keyboard.isDown("a") then
-		player.body:applyForce(-400, 0)
+		player.body:applyForce(-4000, 0)
 	end
 	if love.keyboard.isDown("d") then
-		player.body:applyForce(400, 0)
+		player.body:applyForce(4000, 0)
 	end
 	if love.keyboard.isDown("w") then
-		player.body:applyForce(0, -400)
+		player.body:applyForce(0, -4000)
 	end
 	if love.keyboard.isDown("s") then
-		player.body:applyForce(0, 400)
+		player.body:applyForce(0, 4000)
 	end
 
+	for i, v in ipairs(projectiles) do
+		v.y = v.y + (v.dy * dt)
+		v.x = v.x + (v.dx * dt)
+	end
+end
 
+
+function love.mousepressed(x, y, button)
+	if button == 1 then
+		local startX = player.body:getX() + player.radius / 2
+		local startY = player.body:getY() + player.radius / 2
+		local mouseX = x
+		local mouseY = y
+ 
+		local angle = math.atan2((mouseY - startY), (mouseX - startX))
+ 
+		local bulletDx = bulletSpeed * math.cos(angle)
+		local bulletDy = bulletSpeed * math.sin(angle)
+ 
+		table.insert(projectiles, {x = startX, y = startY, dx = bulletDx, dy = bulletDy})
+	end
 end
 
 

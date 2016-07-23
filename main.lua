@@ -11,7 +11,7 @@ end
 
 function love.update(dt)
     world:update(dt)
-    P.update()
+    P.update(dt)
 end
 
 function love.draw()
