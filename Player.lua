@@ -33,18 +33,18 @@ function P.drawPlayer()
 end
 
 function P.update(dt)
-	print("huh")
 
 	for i, v in ipairs(projectiles) do
 		v.y = v.y + (v.dy * dt)
 		v.x = v.x + (v.dx * dt)
 	end
+
+
 end
 
 
-function love.keypressed(key, scancode, isrepeat)
+function P.keypressed(key, scancode, isrepeat)
 
-	print("wat")
 	local x, y = player.body:getLinearVelocity()
 	if key == "a" then
 		player.body:setLinearVelocity(-400, y)

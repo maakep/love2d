@@ -20,8 +20,9 @@ function love.draw()
 end
 
 
-function love.keypressed(key)
-   if key == 'escape' then
+function love.keypressed(key, scancode, isrepeat)
+    if key == 'escape' then
         love.event.quit()
-   end
+    end
+    P.keypressed(key, scancode, isrepeat)
 end
