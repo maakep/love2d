@@ -47,8 +47,6 @@ end
 function makeWall(x, y)
 	local physX = x*25+tileWidth/2-tileWidth
 	local physY = y*25+tileWidth/2-tileWidth
-	print(physX)
-	print(physY)
 
 	local body = love.physics.newBody(world, physX, physY)
 	local shape = love.physics.newRectangleShape(tileWidth, tileWidth)

@@ -1,5 +1,3 @@
-local C = require "CollisionCheck"
-
 local P = {}
 
 local x
@@ -12,7 +10,7 @@ local bool = false
 player 		=	{ radius = 20 }
 
 projectiles	=	{}
-bulletSpeed = 250
+bulletSpeed = 1000
 
 
 function P.init()
@@ -30,21 +28,12 @@ function P.drawPlayer()
 	for i, v in ipairs(projectiles) do
 		love.graphics.circle("fill", v.x, v.y, 3)
 	end
+
+	love.graphics.print(player.body:getAngularVelocity(), 10, 60) 
 end
 
 function P.update(dt)
-	if love.keyboard.isDown("a") then
-		player.body:applyForce(-4000, 0)
-	end
-	if love.keyboard.isDown("d") then
-		player.body:applyForce(4000, 0)
-	end
-	if love.keyboard.isDown("w") then
-		player.body:applyForce(0, -4000)
-	end
-	if love.keyboard.isDown("s") then
-		player.body:applyForce(0, 4000)
-	end
+	print("huh")
 
 	for i, v in ipairs(projectiles) do
 		v.y = v.y + (v.dy * dt)
@@ -52,6 +41,35 @@ function P.update(dt)
 	end
 end
 
+
+function love.keypressed(key, scancode, isrepeat)
+
+	print("wat")
+	local x, y = player.body:getLinearVelocity()
+	if key == "a" then
+		player.body:setLinearVelocity(-400, y)
+	end
+	if key == "d" then
+		player.body:setLinearVelocity(400, y)
+	end
+	if key == "w" then
+		player.body:setLinearVelocity(x, -400)
+	end
+	if key == "s" then
+		player.body:setLinearVelocity(x, 400)
+	end
+end
+
+function love.keyreleased(key)
+	local x, y = player.body:getLinearVelocity()
+
+	if key == "s" or key == "w" then
+		player.body:setLinearVelocity(x, 0)
+	end
+	if key == "a" or key == "d" then
+		player.body:setLinearVelocity(0, y)
+	end
+end
 
 function love.mousepressed(x, y, button)
 	if button == 1 then
